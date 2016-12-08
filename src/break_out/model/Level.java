@@ -6,9 +6,7 @@ import break_out.Constants;
  * This object contains information about the running game
  * 
  * @author dmlux
- * @author I. Schumacher
- * @author Simon Buchholz
- * @author Julia Sikorski
+ * @author I. Schumacher, modified by Simon Buchholz, Julia Sikorski
  */
 public class Level extends Thread {
 
