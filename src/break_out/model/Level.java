@@ -24,27 +24,21 @@ public class Level extends Thread {
 	 * The score of the level
 	 */
     private int score;
-    
-    /**
-     * The current x- and y-position of the ball
-     */
-    private Position ballPos;
-    
-    
-    // Hier die Variablen dx und dy deklarieren, bitte an den JavaDoc-Kommentar denken, siehe andere Variablendeklarationen
-    
-    /**
-     * Elemente des Richtungsvektors
-     */
-    double dx = 1;
-    double dy = -1;
-    
-    
+     
     /**
      * Flag that shows if the ball was started
      */
     private boolean ballWasStarted = true;
 
+    /**
+     * Neues Objekt der Klasse Ball deklarieren
+     */
+    private Ball ball;
+    
+    /**
+     * Neues Objekt der Klasse Paddle deklarieren
+     */
+    private Paddle paddle;
         
     /**
      * Der Konstruktor instanziiert einen neuen Level:
@@ -56,19 +50,13 @@ public class Level extends Thread {
     	this.game = game;
     	this.levelnr = levelnr;
     	this.score = score;
-        this.ballPos = new Position(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2, Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER - 1);
+    	// ball instanziieren
+    	this.ball = new Ball(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2, 
+    			Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER - Constants.PADDLE_HEIGHT, -5, 5);
+    	// paddle instanziieren
+    	this.paddle = new Paddle();
         loadLevelData(levelnr);
     }
-
-    
-    /**
-     * Getter for the ballposition
-     * @return ballPos The current position of the ball
-     */
-    public Position getBallPos() {
-        return ballPos;
-    }
-
     
     /**
      * Setzt ballWasStarted auf true, d.h. der Ball "startet", 
@@ -94,6 +82,21 @@ public class Level extends Thread {
         return ballWasStarted;
     }
 
+    /**
+     * Liefert das Ballobjekt
+     * @return ball
+     */
+    public Ball getBall() {
+    	return ball;
+    }
+    
+    /**
+     * Liefert das Paddleobjekt
+     * @return paddle
+     */
+    public Paddle getPaddle() {
+    	return paddle;
+    }
 
     /**
      * This method is the thread logic.
@@ -111,20 +114,17 @@ public class Level extends Thread {
 	            	 * <= bzw. >= benutzt man, da bei dx bzw. dy > 1 der Ball mehrere Pixel im selben Schritt zuruecklegt.
 	            	 * Daher kann es sein, dass der Ball den Bildschirmrand nicht pixelgenau trifft.
 	            	 */
-	            	if (ballPos.getX() <= 0) { // Linke Wand ueberpruefen
-	            		dx = -dx;
-	            	} else if (ballPos.getX() >= Constants.SCREEN_WIDTH - Constants.BALL_DIAMETER) { // Rechte Wand ueberpruefen
-	            		dx = -dx;
-	            	} else if (ballPos.getY() >= Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER) { // Untere Wand ueberpruefen
-	            		dy = -dy;
-	            	} else if (ballPos.getY() <= 0) { // Obere Wand ueberpruefen
-	            		dy = -dy;
-	            	}
+	            	/**
+	            	 * Kollisionsabfrage
+	            	 */
+	            	ball.reactOnBorder();
 	            	
 	            	
 	                // hier die neue BallPosition ermitteln
-	            	ballPos.setX(ballPos.getX() + dx); // x-Position um dx veraendern
-	            	ballPos.setY(ballPos.getY() + dy); // y-Position um dy veraendern
+	            	/**
+	            	 * Aktualisierung der Position des Balls
+	            	 */
+	            	ball.updatePosition();
 	            	
 	                               
 	                // update view
