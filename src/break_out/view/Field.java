@@ -99,6 +99,9 @@ public class Field extends JPanel {
 		// Den Ball zeichnen
 		drawBall(g2);
 		
+		// Das Paddle zeichnen
+		drawPaddle(g2);
+		
 	}
 
 
@@ -107,10 +110,21 @@ public class Field extends JPanel {
 	 * darueber auf das Level-Objekt zu, um dortige Methoden zu nutzen
 	 */
 	private void drawBall(Graphics2D g2) {
-		g2.fillOval((int) view.getGame().getLevel().getBallPos().getX(),
-				(int) view.getGame().getLevel().getBallPos().getY(),
+		g2.fillOval((int) view.getGame().getLevel().getBall().getPosition().getX(),
+				(int) view.getGame().getLevel().getBall().getPosition().getY(),
 				(int) (Constants.BALL_DIAMETER),
 				(int) (Constants.BALL_DIAMETER));
+	}
+	
+	/**
+	 * Zeichnet das Paddle, greift dabei ueber das ihm bekannte view-Objekt auf das zugehoerige Game-Objekt und 
+	 * darueber auf das Level-Objekt zu, um dortige Methoden zu nutzen
+	 */
+	private void drawPaddle(Graphics2D g2) {
+		g2.fillRoundRect((int) view.getGame().getLevel().getPaddle().getPosition().getX(),
+				(int) view.getGame().getLevel().getPaddle().getPosition().getY(),
+				(int) (Constants.PADDLE_WIDTH),
+				(int) (Constants.PADDLE_HEIGHT), 2, 2);
 	}
 
 	
