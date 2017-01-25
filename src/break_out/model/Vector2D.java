@@ -28,22 +28,22 @@ public class Vector2D {
 	}
 	
 	/**
-	 * Konstruktor zur Instanziierung des Vektors mit einem Positionsvektor und einem Richtungsvektor
-	 * @param p Positionsvektor
-	 * @param r Richtungsvektor
+	 * Konstruktor zur Instanziierung des Vektors mit einer Ausgangsposition und einer Zielposition
+	 * @param z Zielposition
+	 * @param p Ausgangsposition
 	 */
-	public Vector2D(Vector2D p, Vector2D r) {
-		this.dx = Math.abs(p.getDx() - r.getDx());
-		this.dy = Math.abs(p.getDy() - r.getDy());
+	public Vector2D(Position z, Position p) {
+		this.dx = z.getX() - p.getX();
+		this.dy = z.getY() - p.getY();
 	}
 	
 	/**
 	 * Normiert den Vektor und multipliziert ihn mit der Geschwindigkeit des Balls
 	 */
 	public void rescale() {
-		this.dx = this.dx / this.dy;
-		this.dx = this.dx * Constants.BALL_SPEED;
-		this.dy = Constants.BALL_SPEED;
+		double length = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
+		this.dx = (this.dx / length) * Constants.BALL_SPEED;
+		this.dy = (this.dy / length) * Constants.BALL_SPEED;
 	}
 	
 	/**

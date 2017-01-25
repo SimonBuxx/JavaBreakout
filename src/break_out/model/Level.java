@@ -28,7 +28,7 @@ public class Level extends Thread {
     /**
      * Flag that shows if the ball was started
      */
-    private boolean ballWasStarted = true;
+    private boolean ballWasStarted = false;
 
     /**
      * Neues Objekt der Klasse Ball deklarieren
@@ -51,8 +51,7 @@ public class Level extends Thread {
     	this.levelnr = levelnr;
     	this.score = score;
     	// ball instanziieren
-    	this.ball = new Ball(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2, 
-    			Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER - Constants.PADDLE_HEIGHT, -5, 5);
+    	this.ball = new Ball();
     	// paddle instanziieren
     	this.paddle = new Paddle();
         loadLevelData(levelnr);
@@ -109,26 +108,16 @@ public class Level extends Thread {
 	            // if ballWasStarted is true (Spiel soll ablaufen, d.h. der Ball soll sich bewegen)
 	            if (ballWasStarted) {
 	                
-	            	// hier das Abprallverhalten des Balls an den vier Waenden implementieren
-	            	/**
-	            	 * <= bzw. >= benutzt man, da bei dx bzw. dy > 1 der Ball mehrere Pixel im selben Schritt zuruecklegt.
-	            	 * Daher kann es sein, dass der Ball den Bildschirmrand nicht pixelgenau trifft.
-	            	 */
-	            	/**
-	            	 * Kollisionsabfrage
-	            	 */
+	            	// Kollisionsabfragen
 	            	ball.reactOnBorder();
+	            	ball.reflectOnPaddle(paddle);
 	            	
-	            	
-	                // hier die neue BallPosition ermitteln
-	            	/**
-	            	 * Aktualisierung der Position des Balls
-	            	 */
+	            	// Aktualisierung der Positionen
 	            	ball.updatePosition();
-	            	
+	            	paddle.updatePosition();
 	                               
 	                // update view
-	                game.notifyObservers();    
+	                game.notifyObservers();
 	                
 	            }
 	            // pause thread by a few millis

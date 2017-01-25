@@ -20,14 +20,11 @@ public class Ball {
 	
 	/**
 	 * Konstruktor fuer den Ball
-	 * @param x  X-Koordinate des Balls
-	 * @param y  Y-Koordinate des Balls
-	 * @param dx X-Richtung des Balls (nicht normiert)
-	 * @param dy Y-Richtung des Balls (nicht normiert)
 	 */
-	public Ball(double x, double y, double dx, double dy) {
-		pos = new Position(x, y);
-		direction = new Vector2D(dx, dy);
+	public Ball() {
+		pos = new Position(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2, 
+				Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER - Constants.PADDLE_HEIGHT);
+		direction = new Vector2D(-5, 5);
 		direction.rescale();
 	}
 	
@@ -68,5 +65,34 @@ public class Ball {
     	} else if (pos.getY() <= 0) { // Obere Wand ueberpruefen
     		direction.setDy(-direction.getDy());
     	}
+	}
+	
+	/**
+	 * Prueft, ob der Ball mit dem Paddle kollidiert ist
+	 * @param p Paddle-Objekt
+	 * @return Ball ist kollidiert
+	 */
+	public boolean hitsPaddle(Paddle p) {
+		return (this.pos.getX() + Constants.BALL_DIAMETER >= p.getPosition().getX() // Ball ist rechts von der linken Seite des Paddles
+				// Ball ist links von der rechten Seite des Paddles
+				&& this.pos.getX() <= p.getPosition().getX() + Constants.PADDLE_WIDTH
+				// Unterseite des Balls ist unterhalb der oberen Kante des Paddles
+				&& this.pos.getY() + Constants.BALL_DIAMETER >= Constants.SCREEN_HEIGHT - Constants.PADDLE_HEIGHT);
+	} 
+	
+	/**
+	 * Implementiert das Abprallverhalten des Balls bei Kollision mit dem Paddle
+	 * @param paddle
+	 */
+	public void reflectOnPaddle(Paddle paddle) {
+		// Tiefergelegten Mittelpunkt als Positionsobjekt erzeugen
+		Position mittelpunkt = new Position(paddle.getPosition().getX() + Constants.PADDLE_WIDTH/2, Constants.SCREEN_HEIGHT + 30);
+		// Falls der Ball mit dem Paddle kollidiert...
+		if (hitsPaddle(paddle)) {
+			// Neuer Richtungsvektor
+			Vector2D neu = new Vector2D(new Position(this.pos.getX() + Constants.BALL_DIAMETER / 2, this.pos.getY()), mittelpunkt);
+			neu.rescale(); // Vektor skalieren
+			this.direction = neu; // Neue Richtung als Richtung des Balls verwenden
+		}
 	}
 }
