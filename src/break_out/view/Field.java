@@ -14,7 +14,7 @@ import net.miginfocom.swing.MigLayout;
 /**
  * The field represents the board of the game. All components are on the board
  * 
- * @author dmlux, modified by iSchumacher
+ * @author dmlux, modified by iSchumacher, Simon Buchholz, Julia Sikorski
  * 
  */
 public class Field extends JPanel {
@@ -102,6 +102,8 @@ public class Field extends JPanel {
 		// Das Paddle zeichnen
 		drawPaddle(g2);
 		
+		// Das Netz zeichnen
+		drawGrid(g2);
 	}
 
 
@@ -127,5 +129,17 @@ public class Field extends JPanel {
 				(int) (Constants.PADDLE_HEIGHT), 2, 2);
 	}
 
-	
+	/**
+	 * Zeichnet das Netz
+	 */
+	private void drawGrid(Graphics2D g2) {
+		// Vertikale Linien
+		for (int i = 0; i < Constants.SCREEN_WIDTH/Constants.SQUARES_X; i++) {
+			g2.drawLine(i * (int) Constants.SCREEN_WIDTH/Constants.SQUARES_X, 0, i * (int) Constants.SCREEN_WIDTH/Constants.SQUARES_X, (int) Constants.SCREEN_HEIGHT);
+		}
+		// Horizontale Linien
+		for (int j = 0; j < Constants.SCREEN_HEIGHT/Constants.SQUARES_Y; j++) {
+			g2.drawLine(0, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y, (int) Constants.SCREEN_WIDTH, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y);
+		}
+	}
 }
