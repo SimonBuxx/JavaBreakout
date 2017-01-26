@@ -90,7 +90,7 @@ public class Ball {
 		// Falls der Ball mit dem Paddle kollidiert...
 		if (hitsPaddle(paddle)) {
 			// Neuer Richtungsvektor
-			Vector2D neu = new Vector2D(new Position(this.pos.getX() + Constants.BALL_DIAMETER / 2, this.pos.getY()), mittelpunkt);
+			Vector2D neu = new Vector2D(new Position(this.pos.getX() + Constants.BALL_DIAMETER / 2, this.pos.getY() + Constants.BALL_DIAMETER / 2), mittelpunkt);
 			neu.rescale(); // Vektor skalieren
 			this.direction = neu; // Neue Richtung als Richtung des Balls verwenden
 		}
