@@ -104,12 +104,19 @@ public class Field extends JPanel {
 		
 		// Das Netz zeichnen
 		drawGrid(g2);
+		
+		// Die Steine zeichnen
+		drawStones(g2);
+		
+		// Den Punktestand zeichnen
+		drawScore(g2);
 	}
 
 
 	/**
 	 * Zeichnet den Ball, greift dabei ueber das ihm bekannte view-Objekt auf das zugehoerige Game-Objekt und 
 	 * darueber auf das Level-Objekt zu, um dortige Methoden zu nutzen
+	 * @param g2: Graphics2D-Objekt
 	 */
 	private void drawBall(Graphics2D g2) {
 		g2.fillOval((int) view.getGame().getLevel().getBall().getPosition().getX(),
@@ -121,6 +128,7 @@ public class Field extends JPanel {
 	/**
 	 * Zeichnet das Paddle, greift dabei ueber das ihm bekannte view-Objekt auf das zugehoerige Game-Objekt und 
 	 * darueber auf das Level-Objekt zu, um dortige Methoden zu nutzen
+	 * @param g2: Graphics2D-Objekt
 	 */
 	private void drawPaddle(Graphics2D g2) {
 		g2.fillRoundRect((int) view.getGame().getLevel().getPaddle().getPosition().getX(),
@@ -131,6 +139,7 @@ public class Field extends JPanel {
 
 	/**
 	 * Zeichnet das Netz
+	 * @param g2: Graphics2D-Objekt
 	 */
 	private void drawGrid(Graphics2D g2) {
 		// Vertikale Linien
@@ -141,5 +150,30 @@ public class Field extends JPanel {
 		for (int j = 0; j < Constants.SCREEN_HEIGHT/Constants.SQUARES_Y; j++) {
 			g2.drawLine(0, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y, (int) Constants.SCREEN_WIDTH, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y);
 		}
+	}
+	
+	/**
+	 * Zeichnet die Steine
+	 * @param g2: Graphics2D-Objekt
+	 */
+	private void drawStones(Graphics2D g2) {
+		for (int i = 0; i < Constants.SQUARES_X; i++) {
+			for (int j = 0; j < Constants.SQUARES_Y; j++) {
+				if (view.getGame().getLevel().getStones()[j][i] > 0) { // Falls der Stein gezeichnet werden soll
+					g2.setColor(new Color(200 - (view.getGame().getLevel().getStones()[j][i] - 1) * 30, 200 - 
+							(view.getGame().getLevel().getStones()[j][i] - 1) * 30, 200 - (view.getGame().getLevel().getStones()[j][i] - 1) * 30));
+					g2.fillRect(i * (int) Constants.SCREEN_WIDTH/Constants.SQUARES_X + 2, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y + 2, 
+						(int) Constants.SCREEN_WIDTH/Constants.SQUARES_X - 3, (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y - 3);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Zeichnet den Score
+	 * @param g2: Graphics2D-Objekt
+	 */
+	private void drawScore(Graphics2D g2) {
+		g2.drawString("Score: " + view.getGame().getLevel().getScore(), 10, 20);
 	}
 }

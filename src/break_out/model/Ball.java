@@ -95,4 +95,65 @@ public class Ball {
 			this.direction = neu; // Neue Richtung als Richtung des Balls verwenden
 		}
 	}
+	
+	/**
+	 * Prueft, ob der Ball einen Stein beruehrt
+	 * @param stones Steinarray
+	 * @return Ball ist kollidiert
+	 */
+	public int[] hitsStone(int[][] stones) {
+		// X-Koordinate des Balls berechnen
+		int gridX = 0;
+		if (direction.getDx() > 0) {
+			gridX = (int) Math.floor((pos.getX() + Constants.BALL_DIAMETER) / (Constants.SCREEN_WIDTH / Constants.SQUARES_X));
+		} else {
+			gridX = (int) (Math.ceil(pos.getX() / (Constants.SCREEN_WIDTH / Constants.SQUARES_X)) - 1);
+		}
+		if (gridX < 0) {
+			gridX = 0;
+		} else if (gridX > Constants.SQUARES_X - 1) {
+			gridX = Constants.SQUARES_X - 1;
+		}
+		
+		// Y-Koordinate berechnen
+		int gridY = 0;
+		if (direction.getDy() > 0) {
+			gridY = (int) Math.floor((pos.getY() + Constants.BALL_DIAMETER) / (Constants.SCREEN_HEIGHT / Constants.SQUARES_Y));
+		} else {
+			gridY = (int) (Math.ceil(pos.getY() / (Constants.SCREEN_HEIGHT / Constants.SQUARES_Y)) - 1);
+		}
+		if (gridY < 0) {
+			gridY = 0;
+		} else if (gridY > Constants.SQUARES_Y - 1) {
+			gridY = Constants.SQUARES_Y - 1;
+		}
+		
+		int[] stonePos = {-1, -1};
+		
+		// Vom Stein abprallen
+		if (stones[gridY][gridX] > 0) { // Falls der Ball einen Stein beruehrt
+			stonePos[0] = gridX;
+			stonePos[1] = gridY; // Positionen fuer die Rueckgabe aendern
+			// Falls der Ball von unten auf den Stein trifft
+			if (pos.getY() >= gridY * (Constants.SCREEN_HEIGHT/Constants.SQUARES_Y)) {
+				direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+			}
+			
+			// Falls der Ball von oben auf den Stein trifft
+			if (pos.getY() + Constants.BALL_DIAMETER < gridY * (Constants.SCREEN_HEIGHT/Constants.SQUARES_Y)) {
+				direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+			}
+			
+			// Falls der Ball von links auf den Stein trifft
+			if(pos.getX() + Constants.BALL_DIAMETER < gridX * (Constants.SCREEN_WIDTH/Constants.SQUARES_X)) {
+				direction.setDx(-direction.getDx()); // X-Richtung umkehren
+			}
+			
+			// Falls der Ball von rechts  auf den Stein trifft
+			if(pos.getX() >= gridX * (Constants.SCREEN_WIDTH/Constants.SQUARES_X)) {
+				direction.setDx(-direction.getDx()); // X-Richtung umkehren
+			}
+		}
+		return stonePos;
+	}
 }

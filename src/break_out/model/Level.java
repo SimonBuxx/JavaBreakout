@@ -1,6 +1,7 @@
 package break_out.model;
 
 import break_out.Constants;
+import break_out.controller.JSONReader;
 
 /**
  * This object contains information about the running game
@@ -39,6 +40,11 @@ public class Level extends Thread {
      * Neues Objekt der Klasse Paddle deklarieren
      */
     private Paddle paddle;
+    
+    /**
+     * Neues Array mit den Steinpositionen deklarieren
+     */
+    private int[][] stones = new int[Constants.SQUARES_Y][Constants.SQUARES_X];
         
     /**
      * Der Konstruktor instanziiert einen neuen Level:
@@ -98,6 +104,22 @@ public class Level extends Thread {
     }
 
     /**
+     * Liefert das Array mit den Steinpositionen
+     * @return stones
+     */
+    public int[][] getStones() {
+    	return stones;
+    }
+    
+    /**
+     * Gibt den aktuelle Punktestand zurueck
+     * @return score
+     */
+    public int getScore() {
+    	return score;
+    }
+    
+    /**
      * This method is the thread logic.
      */
     public void run() {
@@ -115,6 +137,8 @@ public class Level extends Thread {
 	            	// Aktualisierung der Positionen
 	            	ball.updatePosition();
 	            	paddle.updatePosition();
+	            	
+	            	updateStonesAndScore();
 	                               
 	                // update view
 	                game.notifyObservers();
@@ -135,7 +159,23 @@ public class Level extends Thread {
     * @param levelnr Die Nummer X fuer die LevelX.json Datei
     */
     private void loadLevelData(int levelnr) {
-    		
+    	JSONReader json = new JSONReader("res/Level" + levelnr + ".json");
+    	this.levelnr = levelnr;
+    	stones = json.getStones2DArray();
+    }
+    
+    /**
+     * Aktualisiert die Steine und den Score
+     */
+    public void updateStonesAndScore() {
+    	int[] stonePos = ball.hitsStone(stones);
+    	if (stonePos[0] >= 0 && stonePos[1] >= 0) {
+    		score++;
+    		stones[stonePos[1]][stonePos[0]]++;
+    		if (stones[stonePos[1]][stonePos[0]] >= 4) {
+    			stones[stonePos[1]][stonePos[0]] = 0;
+    		}
+    	}
     }
     
 }
