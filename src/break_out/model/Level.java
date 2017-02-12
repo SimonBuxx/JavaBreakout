@@ -81,7 +81,7 @@ public class Level extends Thread {
     
     /**
      * Liefert den booleschen Wert der Variablen ballWasStarted
-     * @return ballWasStarted True, wenn sich der Ball bewegt, sonst false
+     * @return ballWasStarted: true, wenn sich der Ball bewegt, sonst false
      */
     public boolean ballWasStarted() {
         return ballWasStarted;
@@ -89,7 +89,7 @@ public class Level extends Thread {
 
     /**
      * Liefert das Ballobjekt
-     * @return ball
+     * @return Ball-Objekt
      */
     public Ball getBall() {
     	return ball;
@@ -97,7 +97,7 @@ public class Level extends Thread {
     
     /**
      * Liefert das Paddleobjekt
-     * @return paddle
+     * @return Paddle-Objekt
      */
     public Paddle getPaddle() {
     	return paddle;
@@ -105,7 +105,7 @@ public class Level extends Thread {
 
     /**
      * Liefert das Array mit den Steinpositionen
-     * @return stones
+     * @return Steinarray als 2D-Array
      */
     public int[][] getStones() {
     	return stones;
@@ -113,7 +113,7 @@ public class Level extends Thread {
     
     /**
      * Gibt den aktuelle Punktestand zurueck
-     * @return score
+     * @return aktueller Punktestand als Integer
      */
     public int getScore() {
     	return score;
@@ -171,8 +171,8 @@ public class Level extends Thread {
     	int[] stonePos = ball.hitsStone(stones);
     	if (stonePos[0] >= 0 && stonePos[1] >= 0) {
     		score++;
-    		stones[stonePos[1]][stonePos[0]]++;
-    		if (stones[stonePos[1]][stonePos[0]] >= 4) {
+    		stones[stonePos[1]][stonePos[0]]--;
+    		if (stones[stonePos[1]][stonePos[0]] <= 0) {
     			stones[stonePos[1]][stonePos[0]] = 0;
     		}
     	}
