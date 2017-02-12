@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * A class that contains all constant values to configure the game
  * 
- * @author dmlux, modified by I. Schumacher
+ * @author dmlux, modified by I. Schumacher, Simon Buchholz, Julia Sikorski
  * 
  */
 public class Constants {
@@ -63,11 +63,11 @@ public class Constants {
     /**
      * The paddle speed
      */
-    public static final double DX_MOVEMENT = 4.5;
+    public static final double DX_MOVEMENT = 3; // 4.5
     
     /**
      * The ball speed
      */
-    public static final double BALL_SPEED = 1.20;
+    public static final double BALL_SPEED = 1.20; // 1.20
     
 }

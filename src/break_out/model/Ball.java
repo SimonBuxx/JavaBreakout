@@ -20,17 +20,20 @@ public class Ball {
 	
 	/**
 	 * Konstruktor fuer den Ball
+	 * Der Konstruktor plaziert den Ball in der Bildschirmmitte auf dem Paddle
 	 */
 	public Ball() {
-		pos = new Position(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2, 
+		// X-Koordinate: Halber Bildschirm minus halber Ballumfang
+		// Y-Koordinate: Bildschirmhoehe minus Ballumfang minus Paddlehoehe, Ball liegt unten auf dem Paddle
+		pos = new Position(Constants.SCREEN_WIDTH / 2 - Constants.BALL_DIAMETER / 2,
 				Constants.SCREEN_HEIGHT - Constants.BALL_DIAMETER - Constants.PADDLE_HEIGHT);
-		direction = new Vector2D(-5, 5);
-		direction.rescale();
+		direction = new Vector2D(-5, 5); // Startrichtung angeben
+		direction.rescale(); // Startrichtung skalieren, so dass Laenge 1
 	}
 	
 	/**
 	 * Getter fuer die Position
-	 * @return pos
+	 * @return Position des Balls als Position-Objekt
 	 */
 	public Position getPosition() {
 		return pos;
@@ -38,7 +41,7 @@ public class Ball {
 	
 	/**
 	 * Getter fuer die Richtung
-	 * @return direction
+	 * @return Richtung des Balls als Vektor
 	 */
 	public Vector2D getDirection() {
 		return direction;
@@ -70,7 +73,7 @@ public class Ball {
 	/**
 	 * Prueft, ob der Ball mit dem Paddle kollidiert ist
 	 * @param p Paddle-Objekt
-	 * @return Ball ist kollidiert
+	 * @return Ball ist mit dem Paddle kollidiert
 	 */
 	public boolean hitsPaddle(Paddle p) {
 		return (this.pos.getX() + Constants.BALL_DIAMETER >= p.getPosition().getX() // Ball ist rechts von der linken Seite des Paddles
@@ -82,7 +85,7 @@ public class Ball {
 	
 	/**
 	 * Implementiert das Abprallverhalten des Balls bei Kollision mit dem Paddle
-	 * @param paddle
+	 * @param paddle Paddle-Objekt, an dem Kollision erfolgen soll
 	 */
 	public void reflectOnPaddle(Paddle paddle) {
 		// Tiefergelegten Mittelpunkt als Positionsobjekt erzeugen
@@ -97,9 +100,9 @@ public class Ball {
 	}
 	
 	/**
-	 * Prueft, ob der Ball einen Stein beruehrt
-	 * @param stones Steinarray
-	 * @return Ball ist kollidiert
+	 * Prueft, ob der Ball einen Stein beruehrt und implementiert Abprallverhalten vom Stein
+	 * @param stones Steinarray mit Werten 0 - 3 je nach Leben des Steins
+	 * @return Koordinate des Steins als Array, {-1, -1} falls keine Kollision
 	 */
 	public int[] hitsStone(int[][] stones) {
 		// X-Koordinate des Balls berechnen
@@ -128,30 +131,46 @@ public class Ball {
 			gridY = Constants.SQUARES_Y - 1;
 		}
 		
-		int[] stonePos = {-1, -1};
+		int[] stonePos = {-1, -1}; // Array fuer die Rueckgabe der Koordinaten
+		int stoneWidth = (int) Constants.SCREEN_WIDTH / Constants.SQUARES_X;
+		int stoneHeight = (int) Constants.SCREEN_HEIGHT / Constants.SQUARES_Y;
+		int stoneX = gridX * stoneWidth;
+		int stoneY = gridY * stoneHeight;
 		
-		// Vom Stein abprallen
-		if (stones[gridY][gridX] > 0) { // Falls der Ball einen Stein beruehrt
+		if (stones[gridY][gridX] > 0) {
 			stonePos[0] = gridX;
 			stonePos[1] = gridY; // Positionen fuer die Rueckgabe aendern
-			// Falls der Ball von unten auf den Stein trifft
-			if (pos.getY() >= gridY * (Constants.SCREEN_HEIGHT/Constants.SQUARES_Y)) {
-				direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-			}
 			
-			// Falls der Ball von oben auf den Stein trifft
-			if (pos.getY() + Constants.BALL_DIAMETER < gridY * (Constants.SCREEN_HEIGHT/Constants.SQUARES_Y)) {
-				direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-			}
-			
-			// Falls der Ball von links auf den Stein trifft
-			if(pos.getX() + Constants.BALL_DIAMETER < gridX * (Constants.SCREEN_WIDTH/Constants.SQUARES_X)) {
-				direction.setDx(-direction.getDx()); // X-Richtung umkehren
-			}
-			
-			// Falls der Ball von rechts  auf den Stein trifft
-			if(pos.getX() >= gridX * (Constants.SCREEN_WIDTH/Constants.SQUARES_X)) {
-				direction.setDx(-direction.getDx()); // X-Richtung umkehren
+			if (pos.getY() + Constants.BALL_DIAMETER < stoneY + stoneHeight  && direction.getDy() > 0) {
+				// Ball trifft von oben auf den Stein
+				if (stones[gridY - 1][gridX] == 0) {
+					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+				} else {
+					// Top-Kollision soll nicht eintreten, da Stein über getroffenem Stein
+					direction.setDx(-direction.getDx()); // X-Richtung umkehren
+				}
+			} else if (pos.getX() < stoneX  && direction.getDx() > 0) {
+				// Ball trifft von links auf den Stein
+				if (stones[gridY][gridX - 1] == 0) {
+					direction.setDx(-direction.getDx()); // X-Richtung umkehren
+				} else {
+					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+				}
+				return stonePos;
+			} else if (pos.getY() > stoneY && direction.getDy() < 0) {
+				if (stones[gridY + 1][gridX] == 0) {
+					// Ball trifft von unten auf den Stein
+					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+				} else {
+					direction.setDx(-direction.getDx()); // X-Richtung umkehren
+				}
+			} else if (pos.getX() > stoneX  && direction.getDx() < 0) {
+				// Ball trifft von rechts auf den Stein
+				if (stones[gridY][gridX + 1] == 0) {
+					direction.setDx(-direction.getDx()); // X-Richtung umkehren
+				} else {
+					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
+				}
 			}
 		}
 		return stonePos;

@@ -2,6 +2,7 @@ package break_out.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -160,8 +161,8 @@ public class Field extends JPanel {
 		for (int i = 0; i < Constants.SQUARES_X; i++) {
 			for (int j = 0; j < Constants.SQUARES_Y; j++) {
 				if (view.getGame().getLevel().getStones()[j][i] > 0) { // Falls der Stein gezeichnet werden soll
-					g2.setColor(new Color(200 - (view.getGame().getLevel().getStones()[j][i] - 1) * 30, 200 - 
-							(view.getGame().getLevel().getStones()[j][i] - 1) * 30, 200 - (view.getGame().getLevel().getStones()[j][i] - 1) * 30));
+					g2.setColor(new Color(200 - (3 - view.getGame().getLevel().getStones()[j][i]) * 30, 200 - 
+							(3 - view.getGame().getLevel().getStones()[j][i]) * 30, 200 - (3 - view.getGame().getLevel().getStones()[j][i]) * 30));
 					g2.fillRect(i * (int) Constants.SCREEN_WIDTH/Constants.SQUARES_X + 2, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y + 2, 
 						(int) Constants.SCREEN_WIDTH/Constants.SQUARES_X - 3, (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y - 3);
 				}
@@ -174,6 +175,8 @@ public class Field extends JPanel {
 	 * @param g2: Graphics2D-Objekt
 	 */
 	private void drawScore(Graphics2D g2) {
+		g2.setColor(new Color(0, 0, 0));
+		g2.setFont(new Font(g2.getFont().getFontName(), 0, 20));
 		g2.drawString("Score: " + view.getGame().getLevel().getScore(), 10, 20);
 	}
 }
