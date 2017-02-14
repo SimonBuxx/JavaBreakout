@@ -116,7 +116,7 @@ public class Ball {
 			gridX = 0;
 		} else if (gridX > Constants.SQUARES_X - 1) {
 			gridX = Constants.SQUARES_X - 1;
-		}
+ 		}
 		
 		// Y-Koordinate berechnen
 		int gridY = 0;
@@ -151,7 +151,7 @@ public class Ball {
 				}
 			} else if (pos.getX() < stoneX  && direction.getDx() > 0) {
 				// Ball trifft von links auf den Stein
-				if (stones[gridY][gridX - 1] == 0) {
+				if (stones[gridY][gridX - 1] == 0 /*&& pos.getX() < stones[gridY][gridX] */) {
 					direction.setDx(-direction.getDx()); // X-Richtung umkehren
 				} else {
 					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
