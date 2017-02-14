@@ -151,7 +151,7 @@ public class Ball {
 				}
 			} else if (pos.getX() < stoneX  && direction.getDx() > 0) {
 				// Ball trifft von links auf den Stein
-				if (stones[gridY][gridX - 1] == 0 /*&& pos.getX() < stones[gridY][gridX] */) {
+				if (stones[gridY][gridX - 1] == 0) {
 					direction.setDx(-direction.getDx()); // X-Richtung umkehren
 				} else {
 					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
