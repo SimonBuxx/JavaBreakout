@@ -19,6 +19,12 @@ public class Ball {
 	private Vector2D direction;
 	
 	/**
+	 * Feldkoordinaten aus dem letzten Durchlauf
+	 */
+	private int lastFieldX = 0;
+	private int lastFieldY = 0;
+	
+	/**
 	 * Konstruktor fuer den Ball
 	 * Der Konstruktor plaziert den Ball in der Bildschirmmitte auf dem Paddle
 	 */
@@ -105,14 +111,20 @@ public class Ball {
 	 * @return Koordinate des Steins als Array, {-1, -1} falls keine Kollision
 	 */
 	public int[] hitsStone(int[][] stones) {
+		/*
+		 * Berechnen der X- und Y-Koordinaten des Balls: Je nach Bewegungsrichtung wird immer die Ecke des Balls als Referenzpunkt
+		 * gewaehlt, in die sich der Ball bewegt. Z.B. Ball bewegt sich nach oben rechts: obere rechte Ecke des Balls wird
+		 * als "Messpunkt" fuer die Grid-Koordinaten genommen.
+		 */
+		
 		// X-Koordinate des Balls berechnen
 		int gridX = 0;
-		if (direction.getDx() > 0) {
+		if (direction.getDx() > 0) { // Ball bewegt sich nach rechts
 			gridX = (int) Math.floor((pos.getX() + Constants.BALL_DIAMETER) / (Constants.SCREEN_WIDTH / Constants.SQUARES_X));
-		} else {
+		} else { // Ball bewegt sich nach links / keine X-Bewegung
 			gridX = (int) (Math.ceil(pos.getX() / (Constants.SCREEN_WIDTH / Constants.SQUARES_X)) - 1);
 		}
-		if (gridX < 0) {
+		if (gridX < 0) { // Sicherstellen, dass Werte zulaessig sind
 			gridX = 0;
 		} else if (gridX > Constants.SQUARES_X - 1) {
 			gridX = Constants.SQUARES_X - 1;
@@ -132,47 +144,32 @@ public class Ball {
 		}
 		
 		int[] stonePos = {-1, -1}; // Array fuer die Rueckgabe der Koordinaten
-		int stoneWidth = (int) Constants.SCREEN_WIDTH / Constants.SQUARES_X;
-		int stoneHeight = (int) Constants.SCREEN_HEIGHT / Constants.SQUARES_Y;
-		int stoneX = gridX * stoneWidth;
-		int stoneY = gridY * stoneHeight;
 		
-		if (stones[gridY][gridX] > 0) {
+		if (stones[gridY][gridX] > 0) {  // Falls der Ball mit einem Stein kollidiert ist
 			stonePos[0] = gridX;
 			stonePos[1] = gridY; // Positionen fuer die Rueckgabe aendern
 			
-			if (pos.getY() + Constants.BALL_DIAMETER < stoneY + stoneHeight  && direction.getDy() > 0) {
-				// Ball trifft von oben auf den Stein
-				if (stones[gridY - 1][gridX] == 0) {
-					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-				} else {
-					// Top-Kollision soll nicht eintreten, da Stein über getroffenem Stein
-					direction.setDx(-direction.getDx()); // X-Richtung umkehren
-				}
-			} else if (pos.getX() < stoneX  && direction.getDx() > 0) {
-				// Ball trifft von links auf den Stein
-				if (stones[gridY][gridX - 1] == 0) {
-					direction.setDx(-direction.getDx()); // X-Richtung umkehren
-				} else {
-					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-				}
-				return stonePos;
-			} else if (pos.getY() > stoneY && direction.getDy() < 0) {
-				if (stones[gridY + 1][gridX] == 0) {
-					// Ball trifft von unten auf den Stein
-					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-				} else {
-					direction.setDx(-direction.getDx()); // X-Richtung umkehren
-				}
-			} else if (pos.getX() > stoneX  && direction.getDx() < 0) {
-				// Ball trifft von rechts auf den Stein
-				if (stones[gridY][gridX + 1] == 0) {
-					direction.setDx(-direction.getDx()); // X-Richtung umkehren
-				} else {
-					direction.setDy(-direction.getDy()); // Y-Richtung umkehren
-				}
+			/*
+			 * Komplett ueberarbeitete Kollisionsabfrage: Letzte Koordinate, indem der Ball sich befindet
+			 * wird gespeichert und mit der neuen Koordinate verglichen. Hat sich X oder Y geaendert,
+			 * muss nach links/rechts bzw. oben/unten abgeprallt werden. (Richtung ist egal, da in beiden
+			 * Faellen jeweils Dx bzw. Dy negiert wird)
+			 */
+			
+			if (lastFieldX != gridX) { // Falls sich die X-Koordinate geaendert hat --> Kollision links oder rechts
+				direction.setDx(-direction.getDx()); // X-Richtung umkehren
+			} else if (lastFieldY != gridY) { // Falls sich die Y-Koordinate geaendert hat --> Kol. oben oder unten
+				direction.setDy(-direction.getDy()); // Y-Richtung umkehren
 			}
 		}
-		return stonePos;
+		
+		/*
+		 * Koordinaten des Feldes abspeichern, in dem sich der Ball gerade befindet
+		 */
+		
+		lastFieldX = gridX;
+		lastFieldY = gridY;
+		
+		return stonePos; // Position des getroffenen Steins zurueckgeben
 	}
 }

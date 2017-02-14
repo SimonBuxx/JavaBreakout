@@ -25,11 +25,12 @@ public class Paddle {
 	
 	/**
 	 * Konstruktor fuer das Paddle
+	 * Ausgangsposition:
+	 * X-Koordinate: Halbe Bildschirmbreite minus halbe Paddlebreite, so dass Paddle mittig
+	 * Y-Koordinate: Bildschirmhoehe minus Paddlehoehe
 	 */
 	public Paddle() {
 		// Instanziieren des Positionsobjektes
-		// X-Koordinate: Halbe Bildschirmbreite minus halbe Paddlebreite, so dass Paddle mittig
-		// Y-Koordinate: Bildschirmhoehe minus Paddlehoehe
 		pos = new Position(Constants.SCREEN_WIDTH / 2 - Constants.PADDLE_WIDTH / 2, 
     			Constants.SCREEN_HEIGHT - Constants.PADDLE_HEIGHT);
 	}
@@ -74,6 +75,10 @@ public class Paddle {
 	
 	/**
 	 * Setter fuer den Status des Paddles
+	 * Der Status gibt an, in welche Richtung das Paddle
+	 * sich bewegt. Er ist 0, wenn das Paddle steht,
+	 * -1, wenn es nach links bewegt wird
+	 * und 1, wenn es nach rechts bewegt wird.
 	 * @param s Richtung, in die sich das Paddle bewegen soll
 	 */
 	public void setStatus(Integer s) {
