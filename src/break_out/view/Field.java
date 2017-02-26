@@ -111,12 +111,9 @@ public class Field extends JPanel {
 		
 		// Den Punktestand zeichnen
 		drawScore(g2);
-<<<<<<< HEAD
 		
 		// Die vebleibenden Leben zeichnen
 		drawLives(g2);
-=======
->>>>>>> master
 	}
 
 
@@ -158,7 +155,6 @@ public class Field extends JPanel {
 			g2.drawLine(0, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y, (int) Constants.SCREEN_WIDTH, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y);
 		}
 	}
-<<<<<<< HEAD
 	
 	/**
 	 * Zeichnet die Steine
@@ -178,27 +174,6 @@ public class Field extends JPanel {
 	}
 	
 	/**
-=======
-	
-	/**
-	 * Zeichnet die Steine
-	 * @param g2: Graphics2D-Objekt
-	 */
-	private void drawStones(Graphics2D g2) {
-		for (int i = 0; i < Constants.SQUARES_X; i++) {
-			for (int j = 0; j < Constants.SQUARES_Y; j++) {
-				if (view.getGame().getLevel().getStones()[j][i] > 0) { // Falls der Stein gezeichnet werden soll
-					g2.setColor(new Color(200 - (3 - view.getGame().getLevel().getStones()[j][i]) * 30, 200 - 
-							(3 - view.getGame().getLevel().getStones()[j][i]) * 30, 200 - (3 - view.getGame().getLevel().getStones()[j][i]) * 30));
-					g2.fillRect(i * (int) Constants.SCREEN_WIDTH/Constants.SQUARES_X + 2, j * (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y + 2, 
-						(int) Constants.SCREEN_WIDTH/Constants.SQUARES_X - 3, (int) Constants.SCREEN_HEIGHT/Constants.SQUARES_Y - 3);
-				}
-			}
-		}
-	}
-	
-	/**
->>>>>>> master
 	 * Zeichnet den Score
 	 * @param g2: Graphics2D-Objekt
 	 */
@@ -207,7 +182,6 @@ public class Field extends JPanel {
 		g2.setFont(new Font(g2.getFont().getFontName(), 0, 20));
 		g2.drawString("Score: " + view.getGame().getLevel().getScore(), 10, 20);
 	}
-<<<<<<< HEAD
 	
 	/**
 	 * Zeichnet die Anzahl der Leben
@@ -218,6 +192,4 @@ public class Field extends JPanel {
 		g2.setFont(new Font(g2.getFont().getFontName(), 0, 20));
 		g2.drawString("Leben: " + view.getGame().getLevel().getLives(), (int) (Constants.SCREEN_WIDTH - 100), 20);
 	}
-=======
->>>>>>> master
 }
