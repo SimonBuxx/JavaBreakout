@@ -125,12 +125,15 @@ public class Controller implements ActionListener, KeyListener {
     	if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
     		game.getLevel().getPaddle().setStatus(1);
     	}
+<<<<<<< HEAD
     	
     	// Falls die Escape-Taste gedrueckt wurde...
     	if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
     		toStartScreen();
     		game.getLevel().setBeendet(true);
     	}
+=======
+>>>>>>> master
     }
 
     /**

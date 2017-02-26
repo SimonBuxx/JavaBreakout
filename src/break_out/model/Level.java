@@ -137,13 +137,18 @@ public class Level extends Thread {
     
     /**
      * Gibt den aktuelle Punktestand zurueck
+<<<<<<< HEAD
      * @return aktueller Punktestand als InteSystem.out.println(stoneCount);ger
+=======
+     * @return aktueller Punktestand als Integer
+>>>>>>> master
      */
     public int getScore() {
     	return score;
     }
     
     /**
+<<<<<<< HEAD
      * Gibt die verbleibenden Leben zurueck
      * @return verbleibende Leben als Integer
      */
@@ -156,6 +161,8 @@ public class Level extends Thread {
     }
     
     /**
+=======
+>>>>>>> master
      * This method is the thread logic.
      */
     public void run() {
@@ -166,6 +173,7 @@ public class Level extends Thread {
 	            // if ballWasStarted is true (Spiel soll ablaufen, d.h. der Ball soll sich bewegen)
 	            if (ballWasStarted) {
 	                
+<<<<<<< HEAD
 	            	if (ball.hitsGround()) {
 	            		leben--;
 	            		if (leben >= 1) {
@@ -182,6 +190,12 @@ public class Level extends Thread {
 	            	ball.reactOnBorder();
 	            	ball.reflectOnPaddle(paddle);
 	            	
+=======
+	            	// Kollisionsabfragen
+	            	ball.reactOnBorder();
+	            	ball.reflectOnPaddle(paddle);
+	            	
+>>>>>>> master
 	            	// Aktualisierung der Positionen
 	            	ball.updatePosition();
 	            	paddle.updatePosition();
@@ -209,8 +223,26 @@ public class Level extends Thread {
     private void loadLevelData(int levelnr) {
     	JSONReader json = new JSONReader("res/Level" + levelnr + ".json");
     	this.levelnr = levelnr;
+<<<<<<< HEAD
     	this.leben = json.getLifeCounter();
     	stones = json.getStones2DArray();
+=======
+    	stones = json.getStones2DArray();
+    }
+    
+    /**
+     * Aktualisiert die Steine und den Score
+     */
+    public void updateStonesAndScore() {
+    	int[] stonePos = ball.hitsStone(stones);
+    	if (stonePos[0] >= 0 && stonePos[1] >= 0) {
+    		score++;
+    		stones[stonePos[1]][stonePos[0]]--;
+    		if (stones[stonePos[1]][stonePos[0]] <= 0) {
+    			stones[stonePos[1]][stonePos[0]] = 0;
+    		}
+    	}
+>>>>>>> master
     }
     
     /**
