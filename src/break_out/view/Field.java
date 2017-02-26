@@ -111,6 +111,9 @@ public class Field extends JPanel {
 		
 		// Den Punktestand zeichnen
 		drawScore(g2);
+		
+		// Die vebleibenden Leben zeichnen
+		drawLives(g2);
 	}
 
 
@@ -178,5 +181,15 @@ public class Field extends JPanel {
 		g2.setColor(new Color(0, 0, 0));
 		g2.setFont(new Font(g2.getFont().getFontName(), 0, 20));
 		g2.drawString("Score: " + view.getGame().getLevel().getScore(), 10, 20);
+	}
+	
+	/**
+	 * Zeichnet die Anzahl der Leben
+	 * @param g2: Graphics2D-Objekt
+	 */
+	private void drawLives(Graphics2D g2) {
+		g2.setColor(new Color(0, 0, 0));
+		g2.setFont(new Font(g2.getFont().getFontName(), 0, 20));
+		g2.drawString("Leben: " + view.getGame().getLevel().getLives(), (int) (Constants.SCREEN_WIDTH - 100), 20);
 	}
 }

@@ -128,7 +128,7 @@ public class Ball {
 			gridX = 0;
 		} else if (gridX > Constants.SQUARES_X - 1) {
 			gridX = Constants.SQUARES_X - 1;
- 		}
+		}
 		
 		// Y-Koordinate berechnen
 		int gridY = 0;
@@ -171,5 +171,13 @@ public class Ball {
 		lastFieldY = gridY;
 		
 		return stonePos; // Position des getroffenen Steins zurueckgeben
+	}
+	
+	/**
+	 * Kollisionsabfrage fuer den unteren Rand
+	 * @return true, falls der Ball den Boden beruehrt oder sich darunter befindet, sonst falls
+	 */
+	public boolean hitsGround() {
+		return (pos.getY() + Constants.BALL_DIAMETER >= Constants.SCREEN_HEIGHT);
 	}
 }

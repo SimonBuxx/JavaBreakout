@@ -11,7 +11,7 @@ import break_out.model.Game;
  * The view class manages the depiction of the components inside the JFrames. It
  * gets the components from the game which is connected to this class
  * 
- * @author dmlux
+ * @author dmlux, modified by Simon Buchholz, Julia Sikorski
  * 
  */
 public class View extends JFrame  {
@@ -125,5 +125,6 @@ public class View extends JFrame  {
 		// veranlasst das Neuzeichnen des Spielfeldes: 
 		// die Methode paintComponents() in der Klasse Field.java wird aufgerufen
 		field.repaint();
+		startScreen.getScore();
 	}
 }
