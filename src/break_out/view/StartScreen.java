@@ -17,7 +17,7 @@ import net.miginfocom.swing.MigLayout;
 /**
  * This screen serves the configuration of the game.
  * 
- * @author dmlux, modified by I. Schumacher
+ * @author dmlux, modified by I. Schumacher, Simon Buchholz, Julia Sikorski
  * 
  */
 public class StartScreen extends JPanel {
@@ -51,7 +51,11 @@ public class StartScreen extends JPanel {
 	 * The error label
 	 */
 	private JLabel error;
-
+	
+	/**
+	 * Label fuer den Score
+	 */
+	private JLabel scoreLabel;
 	
 	/**
 	 * The constructor needs a view
@@ -131,11 +135,17 @@ public class StartScreen extends JPanel {
 		scoreMenu.setLayout(new MigLayout("", "10[center, grow, fill]10",
 				"5[center]5"));
 
-		// adding the compoenents to the layout
+		// adding the components to the layout
 		JLabel headline = new JLabel("Scores");
 		headline.setFont(new Font("Sans-serif", Font.PLAIN, 16));
 		headline.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		scoreLabel = new JLabel("");
+		scoreLabel.setFont(new Font("Sans-serif", Font.PLAIN, 16));
+		scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		scoreMenu.add(headline, "cell 0 0, gaptop 5");
+		scoreMenu.add(scoreLabel, "cell 0 1, gaptop 5");
 		
 		add(scoreMenu, "cell 1 0, gapleft 5");
 	}
@@ -178,6 +188,13 @@ public class StartScreen extends JPanel {
 		return playersName.getText();
 	}
 
+	/**
+	 * Aktualisiert das Label fuer den Score im Startscreen
+	 */
+	public void getScore() {
+		scoreLabel.setText(playersName.getText() + ": " + view.getGame().getLevel().getScore());
+	}
+	
 	/**
 	 * Shows an error in the menu
 	 * @param message The String to be shown

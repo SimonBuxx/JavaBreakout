@@ -37,7 +37,7 @@ public class Game{
     /**
      * The last levelnumber
      */
-    private int maxLevel = 1;  
+    private int maxLevel = 2;  
        
     /**
 	 * The total score of the game

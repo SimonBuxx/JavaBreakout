@@ -15,7 +15,7 @@ import break_out.view.View;
  * The controller takes care of the input events and reacts on those events by
  * manipulating the view and updates the model.
  * 
- * @author dmlux, modified by I. Schumacher
+ * @author dmlux, modified by I. Schumacher, Simon Buchholz, Julia Sikorski
  * 
  */
 public class Controller implements ActionListener, KeyListener {
@@ -108,7 +108,29 @@ public class Controller implements ActionListener, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
+    	// Falls die Leertaste gedrueckt wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+    		// Pruefen, ob der Ball gestartet wurde
+    		if (game.getLevel().ballWasStarted()) {
+    			game.getLevel().stopBall(); // Ball stoppen
+    		} else {
+    			game.getLevel().startBall(); // Ball starten
+    		}
+    	}
+    	// Falls die linke Pfeiltaste gedrueckt wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+    		game.getLevel().getPaddle().setStatus(-1);
+    	}
+    	// Falls die rechte Pfeiltaste gedrueckt wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+    		game.getLevel().getPaddle().setStatus(1);
+    	}
     	
+    	// Falls die Escape-Taste gedrueckt wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+    		toStartScreen();
+    		game.getLevel().setBeendet(true);
+    	}
     }
 
     /**
@@ -116,7 +138,14 @@ public class Controller implements ActionListener, KeyListener {
      */
     @Override
     public void keyReleased(KeyEvent e) {
-        
+    	// Falls die linke Pfeiltaste losgelassen wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+    		game.getLevel().getPaddle().setStatus(0); // Ball anhalten
+    	}
+    	// Falls die rechte Pfeiltaste losgelassen wurde...
+    	if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+    		game.getLevel().getPaddle().setStatus(0); // Ball anhalten
+    	}
     }
 
     
